@@ -19,7 +19,7 @@ val BrandBlue = Color(0xFFFF6B00)
 val BrandBlueDim = Color(0xFF1E293B)
 val Danger = Color(0xFFF05252)
 val Warning = Color(0xFFF7A50B)
-val Success = Color(0xFF0A192F)
+val Success = Color(0xFF93A1B8)
 
 // ---- Metro line colours (real BTS/MRT palette) ----
 val LineSukhumvit = Color(0xFF6EBE4A) // BTS light green
