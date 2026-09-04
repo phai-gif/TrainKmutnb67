@@ -68,7 +68,6 @@ fun WalletScreen(nav: Navigator) {
     }
 
     Column(Modifier.fillMaxWidth()) {
-        RainbowTopLine()
         Text(
             s.walletTitle,
             color = TextPrimary,

@@ -55,7 +55,6 @@ fun TrainsScreen(nav: Navigator) {
     var tab by remember { mutableIntStateOf(0) }
 
     Column(Modifier.fillMaxWidth()) {
-        RainbowTopLine()
         Text(
             s.trainsTitle,
             color = TextPrimary,

@@ -58,7 +58,6 @@ fun ContactStaffScreen(nav: Navigator) {
     val thread = remember { mutableStateListOf<Pair<Boolean, String>>() }
 
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
-        ScreenHeader(s.contactStaff, onBack = { nav.pop() })
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(
                 Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp))

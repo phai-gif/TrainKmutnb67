@@ -58,7 +58,6 @@ fun MapScreen(nav: Navigator) {
         Modifier.fillMaxWidth(),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 24.dp),
     ) {
-        item { RainbowTopLine() }
         item {
             Text(
                 s.mapTitle,

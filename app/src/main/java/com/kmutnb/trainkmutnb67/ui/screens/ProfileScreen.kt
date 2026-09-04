@@ -50,7 +50,6 @@ fun ProfileScreen(nav: Navigator) {
     Column(
         Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
     ) {
-        RainbowTopLine()
         Text(
             s.profileTitle,
             color = TextPrimary,

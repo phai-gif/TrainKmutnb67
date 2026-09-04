@@ -40,7 +40,6 @@ import com.kmutnb.trainkmutnb67.nav.Tab
 import com.kmutnb.trainkmutnb67.ui.components.Badge
 import com.kmutnb.trainkmutnb67.ui.components.CardSurface
 import com.kmutnb.trainkmutnb67.ui.components.Chip
-import com.kmutnb.trainkmutnb67.ui.components.RainbowTopLine
 import com.kmutnb.trainkmutnb67.ui.components.SectionHeader
 import com.kmutnb.trainkmutnb67.ui.theme.BrandTeal
 import com.kmutnb.trainkmutnb67.ui.theme.CardBorder
@@ -78,7 +77,6 @@ fun HomeScreen(nav: Navigator) {
         contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        item { RainbowTopLine() }
         item {
             Row(
                 Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),

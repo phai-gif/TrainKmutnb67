@@ -44,7 +44,6 @@ fun EditProfileScreen(nav: Navigator) {
     LaunchedEffect(saved) { if (saved) { delay(1500); saved = false } }
 
     Column(Modifier.fillMaxWidth()) {
-        ScreenHeader(s.editProfile, onBack = { nav.pop() })
         Column(
             Modifier.fillMaxWidth().padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),

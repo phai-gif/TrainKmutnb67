@@ -208,7 +208,23 @@ fun Chip(text: String, selected: Boolean, onClick: () -> Unit, leadingColor: Col
         )
     }
 }
-
+@Composable
+fun ScreenHeader(title: String, onBack: (() -> Unit)? = null) {
+    Row(
+        Modifier.fillMaxWidth().padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        if (onBack != null) {
+            Box(
+                Modifier.width(34.dp).height(34.dp).clip(RoundedCornerShape(10.dp))
+                    .background(Surface1).clickable(onClick = onBack),
+                contentAlignment = Alignment.Center,
+            ) { Text("‹", color = TextPrimary, fontSize = 22.sp) }
+            Spacer(Modifier.width(12.dp))
+        }
+        Text(title, color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 22.sp)
+    }
+}
 @Composable
 fun Badge(text: String, bg: Color, fg: Color = Color.White) {
     Box(
@@ -221,23 +237,3 @@ fun Badge(text: String, bg: Color, fg: Color = Color.White) {
     }
 }
 
-@Composable
-fun ScreenHeader(title: String, onBack: (() -> Unit)? = null) {
-    Column {
-        RainbowTopLine()
-        Row(
-            Modifier.fillMaxWidth().padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            if (onBack != null) {
-                Box(
-                    Modifier.width(34.dp).height(34.dp).clip(RoundedCornerShape(10.dp))
-                        .background(Surface1).clickable(onClick = onBack),
-                    contentAlignment = Alignment.Center,
-                ) { Text("‹", color = TextPrimary, fontSize = 22.sp) }
-                Spacer(Modifier.width(12.dp))
-            }
-            Text(title, color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 22.sp)
-        }
-    }
-}

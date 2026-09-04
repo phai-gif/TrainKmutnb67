@@ -14,8 +14,8 @@ val BrandGradient: Brush
 val HeaderGradient: Brush
     get() = Brush.linearGradient(listOf(Color0f, Color1f))
 
-private val Color0f = androidx.compose.ui.graphics.Color(0xFF0E5C4E)
-private val Color1f = androidx.compose.ui.graphics.Color(0xFF123A6B)
+private val Color0f = androidx.compose.ui.graphics.Color(0xFF1E293B)
+private val Color1f = androidx.compose.ui.graphics.Color(0xFF1E293B)
 
 /** Thin multi-colour bar shown at the very top of secondary screens. */
 val RainbowBrush: Brush
