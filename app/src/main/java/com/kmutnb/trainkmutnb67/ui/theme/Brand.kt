@@ -21,7 +21,7 @@ private val Color1f = androidx.compose.ui.graphics.Color(0xFF1E293B)
 val RainbowBrush: Brush
     get() = Brush.horizontalGradient(
         listOf(
-            LineArl, Warning, LineYellow, LineSukhumvit,
-            BrandTeal, LineMrtBlue, LineMrtPurple, LinePink
+            LineArl, Warning, LineMrtYellow, LineSukhumvit,
+            BrandTeal, LineMrtBlue, LineMrtPurple, LineMrtPink
         )
     )

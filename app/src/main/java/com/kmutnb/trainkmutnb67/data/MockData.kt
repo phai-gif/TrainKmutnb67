@@ -38,7 +38,7 @@ object MockData {
                 s("S3", "ช่องนนทรี", "Chong Nonsi", MetroLine.SILOM, NORMAL, exits = 4),
                 s("S5", "สุรศักดิ์", "Surasak", MetroLine.SILOM, NORMAL, exits = 3),
                 s("S6", "สะพานตากสิน", "Saphan Taksin", MetroLine.SILOM, CROWDED, exits = 2),
-                s("S8", "กรุงธนบุรี", "Krung Thon Buri", MetroLine.SILOM, NORMAL, exits = 4),
+                s("S8", "กรุงธนบุรี", "Krung Thon Buri", MetroLine.SILOM, NORMAL, interchange = true, exits = 4),
                 s("S9", "วงเวียนใหญ่", "Wongwian Yai", MetroLine.SILOM, NORMAL, exits = 4),
                 s("S12", "บางหว้า", "Bang Wa", MetroLine.SILOM, NORMAL, interchange = true, exits = 4, parking = true),
             )
@@ -56,7 +56,7 @@ object MockData {
                 s("BL8", "เพชรบุรี", "Phetchaburi", MetroLine.MRT_BLUE, NORMAL, interchange = true, exits = 2),
                 s("BL9", "พระราม 9", "Phra Ram 9", MetroLine.MRT_BLUE, CROWDED, exits = 3, parking = true),
                 s("BL10", "ศูนย์วัฒนธรรมแห่งประเทศไทย", "Thailand Cultural Centre", MetroLine.MRT_BLUE, NORMAL, interchange = true, exits = 4),
-                s("BL12", "ลาดพร้าว", "Lat Phrao", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL12", "ลาดพร้าว", "Lat Phrao", MetroLine.MRT_BLUE, NORMAL, interchange = true, exits = 4),
                 s("BL15", "จตุจักร", "Chatuchak Park", MetroLine.MRT_BLUE, CROWDED, interchange = true, exits = 3, parking = true),
             )
         )
@@ -64,7 +64,7 @@ object MockData {
         addAll(
             listOf(
                 s("PP16", "เตาปูน", "Tao Poon", MetroLine.MRT_PURPLE, NORMAL, interchange = true, exits = 4),
-                s("PP15", "บางซ่อน", "Bang Son", MetroLine.MRT_PURPLE, NORMAL, exits = 3),
+                s("PP15", "บางซ่อน", "Bang Son", MetroLine.MRT_PURPLE, NORMAL, interchange = true, exits = 3),
                 s("PP14", "วงศ์สว่าง", "Wong Sawang", MetroLine.MRT_PURPLE, NORMAL, exits = 4),
                 s("PP13", "แยกติวานนท์", "Yaek Tiwanon", MetroLine.MRT_PURPLE, NORMAL, exits = 2),
                 s("PP11", "ศูนย์ราชการนนทบุรี", "Nonthaburi Civic Centre", MetroLine.MRT_PURPLE, NORMAL, interchange = true, exits = 4, parking = true),
@@ -80,10 +80,74 @@ object MockData {
                 s("A2", "ราชปรารภ", "Ratchaprarop", MetroLine.ARL, NORMAL, exits = 2),
                 s("A3", "มักกะสัน", "Makkasan", MetroLine.ARL, NORMAL, interchange = true, exits = 3, parking = true),
                 s("A4", "รามคำแหง", "Ramkhamhaeng", MetroLine.ARL, NORMAL, exits = 3),
-                s("A5", "หัวหมาก", "Hua Mak", MetroLine.ARL, NORMAL, exits = 2),
+                s("A5", "หัวหมาก", "Hua Mak", MetroLine.ARL, NORMAL, interchange = true, exits = 2),
                 s("A6", "บ้านทับช้าง", "Ban Thap Chang", MetroLine.ARL, NORMAL, exits = 2),
                 s("A7", "ลาดกระบัง", "Lat Krabang", MetroLine.ARL, NORMAL, exits = 2, parking = true),
                 s("A8", "สุวรรณภูมิ", "Suvarnabhumi", MetroLine.ARL, CROWDED, exits = 2),
+            )
+        )
+        // SRT Dark Red Line
+        addAll(
+            listOf(
+                s("DR1", "จตุจักร", "Chatuchak", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
+                s("DR2", "วัดเสมียนนารี", "Wat Samian Nari", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
+                s("DR3", "บางเขน", "Bang Khen", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
+                s("DR4", "หลักสี่", "Lak Si", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
+                s("DR5", "ดอนเมือง", "Don Mueang", MetroLine.SRT_DARK_RED, CROWDED, exits = 3, parking = true),
+                s("DR6", "หลักหก", "Lak Hok", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
+                s("DR7", "รังสิต", "Rangsit", MetroLine.SRT_DARK_RED, NORMAL, exits = 3, parking = true),
+            )
+        )
+        // SRT Light Red Line
+        addAll(
+            listOf(
+                s("LR1", "บางซ่อน", "Bang Son", MetroLine.SRT_LIGHT_RED, NORMAL, interchange = true, exits = 3),
+                s("LR2", "บางบำหรุ", "Bang Bamru", MetroLine.SRT_LIGHT_RED, NORMAL, exits = 2),
+                s("LR3", "บางพลัด", "Bang Phlat", MetroLine.SRT_LIGHT_RED, NORMAL, exits = 2),
+                s("LR4", "บางอ้อ", "Bang O", MetroLine.SRT_LIGHT_RED, NORMAL, exits = 2),
+                s("LR5", "ตลิ่งชัน", "Taling Chan", MetroLine.SRT_LIGHT_RED, NORMAL, exits = 2, parking = true),
+            )
+        )
+        // APM Gold Line
+        addAll(
+            listOf(
+                s("G1", "กรุงธนบุรี", "Krung Thon Buri", MetroLine.APM_GOLD, NORMAL, interchange = true, exits = 4),
+                s("G2", "เจริญนคร", "Charoen Nakhon", MetroLine.APM_GOLD, NORMAL, exits = 2),
+                s("G3", "คลองสาน", "Khlong San", MetroLine.APM_GOLD, NORMAL, exits = 2),
+            )
+        )
+        // MRT Yellow Line
+        addAll(
+            listOf(
+                s("Y1", "ลาดพร้าว", "Lat Phrao", MetroLine.MRT_YELLOW, NORMAL, interchange = true, exits = 4),
+                s("Y2", "ภาวนา", "Phawana", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("Y3", "โชคชัย 4", "Chok Chai 4", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("Y4", "ลาดพร้าว 71", "Lat Phrao 71", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("Y5", "ลาดพร้าว 83", "Lat Phrao 83", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("Y6", "มหาดไทย", "Mahat Thai", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("Y7", "ลาดพร้าว 101", "Lat Phrao 101", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("Y8", "บางกะปิ", "Bang Kapi", MetroLine.MRT_YELLOW, CROWDED, exits = 3),
+                s("Y9", "แยกลำสาลี", "Yaek Lam Sali", MetroLine.MRT_YELLOW, NORMAL, interchange = true, exits = 3),
+                s("Y10", "หัวหมาก", "Hua Mak", MetroLine.MRT_YELLOW, NORMAL, interchange = true, exits = 2),
+                s("Y11", "ศรีลาซาล", "Si Lasalle", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("Y12", "สำโรง", "Samrong", MetroLine.MRT_YELLOW, CROWDED, exits = 3, parking = true),
+            )
+        )
+        // MRT Pink Line
+        addAll(
+            listOf(
+                s("PK1", "ศูนย์ราชการนนทบุรี", "Nonthaburi Civic Centre", MetroLine.MRT_PINK, NORMAL, interchange = true, exits = 4),
+                s("PK2", "แคราย", "Khae Rai", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK3", "สนามบินน้ำ", "Sanambin Nam", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK4", "สามัคคี", "Samakkhi", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK5", "วัดพระศรีมหาธาตุ", "Wat Phra Sri Mahathat", MetroLine.MRT_PINK, NORMAL, interchange = true, exits = 3),
+                s("PK6", "รามอินทรา 3", "Ram Inthra 3", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK7", "ลาดปลาเค้า", "Lat Pla Khao", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK8", "วัชรพล", "Vachiraphayaban", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK9", "คู้บอน", "Khu Bon", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK10", "นพรัตน์", "Nopparat", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK11", "ตลาดมีนบุรี", "Min Buri Market", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK12", "มีนบุรี", "Min Buri", MetroLine.MRT_PINK, CROWDED, exits = 3, parking = true),
             )
         )
     }
@@ -138,10 +202,6 @@ object MockData {
 
     // ---------------------------------------------------------------- Promotions
     val promotions: List<Promotion> = listOf(
-        Promotion("p1", "ผูกบัตรเครดิต KBank รับ 10%", "Link KBank card for 10% off",
-            "รับส่วนลด 10% ทุกครั้งที่ชำระด้วยบัตร KBank Mastercard",
-            "10% off every ride paid with a KBank Mastercard.",
-            "10%", "2026-12-31", "💳"),
         Promotion("p2", "นักศึกษา ลด 30%", "Student 30% off",
             "นักเรียน/นักศึกษาที่มีบัตรนักศึกษา รับส่วนลด 30% ทุกเส้นทาง",
             "Verified students get 30% off on all lines.",

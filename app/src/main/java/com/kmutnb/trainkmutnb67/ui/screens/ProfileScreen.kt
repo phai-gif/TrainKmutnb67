@@ -95,6 +95,16 @@ fun ProfileScreen(nav: Navigator) {
                 )
             }
 
+            CardSurface {
+                Text(s.theme, color = TextSecondary, fontSize = 13.sp)
+                Spacer(Modifier.height(8.dp))
+                SegmentedTabs(
+                    options = listOf(s.themeDark, s.themeLight),
+                    selectedIndex = if (AppState.isDarkTheme) 0 else 1,
+                    onSelect = { AppState.setTheme(it == 0) },
+                )
+            }
+
             MenuRow("✏️", s.editProfile) { nav.push(Screen.EditProfile) }
             MenuRow("🏷️", s.myPromotions) { nav.push(Screen.Promotions) }
             MenuRow("🎁", s.rewardsTitle) { nav.push(Screen.Rewards) }

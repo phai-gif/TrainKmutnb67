@@ -134,7 +134,6 @@ private fun TopUpTab(onDone: (String) -> Unit) {
     val s = LocalStrings.current
     var selected by remember { mutableIntStateOf(2) } // 500
     var custom by remember { mutableStateOf("") }
-    var method by remember { mutableIntStateOf(1) }
     var error by remember { mutableStateOf<String?>(null) }
 
     val amount = custom.toIntOrNull() ?: quickAmounts[selected]
@@ -175,13 +174,7 @@ private fun TopUpTab(onDone: (String) -> Unit) {
         }
 
         item { Text(s.paymentMethod, color = TextSecondary, fontSize = 13.sp) }
-        item {
-            Column {
-                RadioRow("💳", s.pmCard, method == 0) { method = 0 }
-                RadioRow("📱", s.pmPromptPay, method == 1) { method = 1 }
-                RadioRow("🏦", s.pmBanking, method == 2) { method = 2 }
-            }
-        }
+        item { RadioRow("📱", s.pmPromptPay, selected = true, onClick = {}) }
 
         item {
             CardSurface {

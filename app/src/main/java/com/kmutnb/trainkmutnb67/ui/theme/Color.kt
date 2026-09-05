@@ -1,18 +1,78 @@
 package com.kmutnb.trainkmutnb67.ui.theme
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 
-// ---- Brand / surfaces (dark) ----
-val BgDark = Color(0xFF1A1D20)
-val BgGradientTop = Color(0xFF0E1524)
-val Surface1 = Color(0xFF1E293B)
-val Surface2 = Color(0xFF172236)
-val CardBorder = Color(0xFF223049)
-val TextPrimary = Color(0xFFF2F5FA)
-val TextSecondary = Color(0xFF93A1B8)
-val TextMuted = Color(0xFF63728C)
+// ---- Neutral palettes (background / surfaces / text) ----
+// Every screen reads the vars below directly (no CompositionLocal), so they're
+// backed by Compose state: flipping them via applyNeutralPalette() recomposes
+// every screen automatically, the same way AppState's mutableStateOf fields do.
+private class NeutralPalette(
+    val bg: Color,
+    val bgGradientTop: Color,
+    val surface1: Color,
+    val surface2: Color,
+    val cardBorder: Color,
+    val textPrimary: Color,
+    val textSecondary: Color,
+    val textMuted: Color,
+)
 
-// ---- Accent ----
+private val DarkPalette = NeutralPalette(
+    bg = Color(0xFF1A1D20),
+    bgGradientTop = Color(0xFF0E1524),
+    surface1 = Color(0xFF1E293B),
+    surface2 = Color(0xFF172236),
+    cardBorder = Color(0xFF223049),
+    textPrimary = Color(0xFFF2F5FA),
+    textSecondary = Color(0xFF93A1B8),
+    textMuted = Color(0xFF63728C),
+)
+
+private val LightPalette = NeutralPalette(
+    bg = Color(0xFFF3F5F9),
+    bgGradientTop = Color(0xFFE9EDF5),
+    surface1 = Color(0xFFFFFFFF),
+    surface2 = Color(0xFFF0F2F7),
+    cardBorder = Color(0xFFE1E5EE),
+    textPrimary = Color(0xFF12151C),
+    textSecondary = Color(0xFF4B5568),
+    textMuted = Color(0xFF8A93A3),
+)
+
+var BgDark by mutableStateOf(DarkPalette.bg)
+    private set
+var BgGradientTop by mutableStateOf(DarkPalette.bgGradientTop)
+    private set
+var Surface1 by mutableStateOf(DarkPalette.surface1)
+    private set
+var Surface2 by mutableStateOf(DarkPalette.surface2)
+    private set
+var CardBorder by mutableStateOf(DarkPalette.cardBorder)
+    private set
+var TextPrimary by mutableStateOf(DarkPalette.textPrimary)
+    private set
+var TextSecondary by mutableStateOf(DarkPalette.textSecondary)
+    private set
+var TextMuted by mutableStateOf(DarkPalette.textMuted)
+    private set
+
+/** Swaps every neutral color to the light or dark palette. Called from [Trainkmutnb67Theme]. */
+internal fun applyNeutralPalette(dark: Boolean) {
+    val p = if (dark) DarkPalette else LightPalette
+    BgDark = p.bg
+    BgGradientTop = p.bgGradientTop
+    Surface1 = p.surface1
+    Surface2 = p.surface2
+    CardBorder = p.cardBorder
+    TextPrimary = p.textPrimary
+    TextSecondary = p.textSecondary
+    TextMuted = p.textMuted
+}
+
+// ---- Accent (same in both themes) ----
 val BrandTeal = Color(0xFFFF6B00)
 val BrandTealDim = Color(0xFFFF6B00)
 val BrandBlue = Color(0xFFFF6B00)
@@ -27,9 +87,11 @@ val LineSilom = Color(0xFF0B7A3E)     // BTS dark green
 val LineMrtBlue = Color(0xFF1E4E9C)   // MRT blue
 val LineMrtPurple = Color(0xFF7E1F86) // MRT purple
 val LineArl = Color(0xFFE2231A)       // Airport Rail Link red
-val LineGold = Color(0xFFC7A24A)      // BTS Gold
-val LineYellow = Color(0xFFF7C948)    // MRT Yellow
-val LinePink = Color(0xFFE86AA6)      // MRT Pink
+val LineSrtDarkRed = Color(0xFF8B1A2B)  // SRT Dark Red Line
+val LineSrtLightRed = Color(0xFFF08A8A) // SRT Light Red Line
+val LineApmGold = Color(0xFFB8860B)     // APM Gold Line
+val LineMrtYellow = Color(0xFFFFC107)   // MRT Yellow Line
+val LineMrtPink = Color(0xFFEC4899)     // MRT Pink Line
 
 // Legacy names kept so the generated Theme.kt still compiles until replaced
 val Purple80 = BrandTeal
