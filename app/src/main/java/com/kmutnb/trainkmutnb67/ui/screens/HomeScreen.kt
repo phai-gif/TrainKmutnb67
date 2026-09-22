@@ -209,11 +209,11 @@ private fun BalanceCard(nav: Navigator) {
     ) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Column {
-                Text(s.balance, color = Color.White.copy(alpha = 0.8f), fontSize = 12.sp)
-                Text("฿${AppState.balanceBaht}.00", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 26.sp)
+                Text(s.balance, color = TextSecondary, fontSize = 12.sp)
+                Text("฿${AppState.balanceBaht}.00", color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 26.sp)
             }
             Column(horizontalAlignment = Alignment.End) {
-                Text(s.pointsCollected, color = Color.White.copy(alpha = 0.8f), fontSize = 12.sp)
+                Text(s.pointsCollected, color = TextSecondary, fontSize = 12.sp)
                 Text("${AppState.points} pts", color = BrandTeal, fontWeight = FontWeight.Bold, fontSize = 20.sp)
             }
         }
@@ -231,14 +231,14 @@ private fun HeaderAction(icon: String, label: String, modifier: Modifier, onClic
     Column(
         modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(Color.White.copy(alpha = 0.12f))
+            .background(Surface2)
             .clickable(onClick = onClick)
             .padding(vertical = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(icon, color = Color.White, fontSize = 16.sp)
+        Text(icon, color = TextPrimary, fontSize = 16.sp)
         Spacer(Modifier.height(4.dp))
-        Text(label, color = Color.White, fontSize = 11.sp)
+        Text(label, color = TextPrimary, fontSize = 11.sp)
     }
 }
 

@@ -119,8 +119,8 @@ private fun WalletBalanceCard() {
             .background(HeaderGradient)
             .padding(18.dp),
     ) {
-        Text(s.walletBalance, color = Color.White.copy(alpha = 0.8f), fontSize = 12.sp)
-        Text("฿${AppState.balanceBaht}.00", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 28.sp)
+        Text(s.walletBalance, color = TextSecondary, fontSize = 12.sp)
+        Text("฿${AppState.balanceBaht}.00", color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 28.sp)
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             Text("● ${s.points} ${AppState.points}", color = BrandTeal, fontSize = 12.sp)

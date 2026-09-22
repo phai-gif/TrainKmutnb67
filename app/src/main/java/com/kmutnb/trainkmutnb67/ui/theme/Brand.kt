@@ -11,11 +11,14 @@ val BrandGradient: Brush
         end = Offset(Float.POSITIVE_INFINITY, 0f)
     )
 
+/**
+ * Header/balance-card background. Reads the theme-aware
+ * [HeaderGradientStart]/[HeaderGradientEnd] (declared in Color.kt, flipped by
+ * applyNeutralPalette) so it switches with the rest of the app instead of
+ * staying a fixed navy in both themes.
+ */
 val HeaderGradient: Brush
-    get() = Brush.linearGradient(listOf(Color0f, Color1f))
-
-private val Color0f = androidx.compose.ui.graphics.Color(0xFF1E293B)
-private val Color1f = androidx.compose.ui.graphics.Color(0xFF1E293B)
+    get() = Brush.linearGradient(listOf(HeaderGradientStart, HeaderGradientEnd))
 
 /** Thin multi-colour bar shown at the very top of secondary screens. */
 val RainbowBrush: Brush

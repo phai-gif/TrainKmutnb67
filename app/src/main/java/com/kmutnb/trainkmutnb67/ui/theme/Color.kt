@@ -18,6 +18,8 @@ private class NeutralPalette(
     val textPrimary: Color,
     val textSecondary: Color,
     val textMuted: Color,
+    val headerGradientStart: Color,
+    val headerGradientEnd: Color,
 )
 
 private val DarkPalette = NeutralPalette(
@@ -29,6 +31,9 @@ private val DarkPalette = NeutralPalette(
     textPrimary = Color(0xFFF2F5FA),
     textSecondary = Color(0xFF93A1B8),
     textMuted = Color(0xFF63728C),
+    // Brand-navy header, same as before — flat single-tone gradient.
+    headerGradientStart = Color(0xFF1E293B),
+    headerGradientEnd = Color(0xFF1E293B),
 )
 
 private val LightPalette = NeutralPalette(
@@ -40,6 +45,10 @@ private val LightPalette = NeutralPalette(
     textPrimary = Color(0xFF12151C),
     textSecondary = Color(0xFF4B5568),
     textMuted = Color(0xFF8A93A3),
+    // Light theme: header now matches the same white -> light-gray tone as
+    // every other card (CardSurface), so it blends in instead of staying navy.
+    headerGradientStart = Color(0xFFFFFFFF),
+    headerGradientEnd = Color(0xFFF0F2F7),
 )
 
 var BgDark by mutableStateOf(DarkPalette.bg)
@@ -59,6 +68,10 @@ var TextSecondary by mutableStateOf(DarkPalette.textSecondary)
     private set
 var TextMuted by mutableStateOf(DarkPalette.textMuted)
     private set
+var HeaderGradientStart by mutableStateOf(DarkPalette.headerGradientStart)
+    private set
+var HeaderGradientEnd by mutableStateOf(DarkPalette.headerGradientEnd)
+    private set
 
 /** Swaps every neutral color to the light or dark palette. Called from [Trainkmutnb67Theme]. */
 internal fun applyNeutralPalette(dark: Boolean) {
@@ -72,6 +85,8 @@ internal fun applyNeutralPalette(dark: Boolean) {
     TextPrimary = p.textPrimary
     TextSecondary = p.textSecondary
     TextMuted = p.textMuted
+    HeaderGradientStart = p.headerGradientStart
+    HeaderGradientEnd = p.headerGradientEnd
 }
 
 // ---- Accent (same in both themes) ----
