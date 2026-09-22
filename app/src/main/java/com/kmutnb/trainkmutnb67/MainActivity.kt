@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.core.view.WindowCompat
 import com.kmutnb.trainkmutnb67.ui.AppRoot
 import com.kmutnb.trainkmutnb67.ui.theme.Trainkmutnb67Theme
 
@@ -13,10 +12,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        WindowCompat.getInsetsController(window, window.decorView).apply {
-            isAppearanceLightStatusBars = false
-        }
-
+        // Status bar icon contrast is kept in sync with the selected theme
+        // reactively inside Trainkmutnb67Theme (see Theme.kt).
         setContent {
             Trainkmutnb67Theme {
                 AppRoot()

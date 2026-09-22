@@ -9,7 +9,7 @@ import androidx.compose.runtime.mutableStateListOf
 sealed class Screen(val root: Tab?) {
     // top-level tabs
     data object Home : Screen(Tab.HOME)
-    data object Wallet : Screen(Tab.WALLET)
+    data class Wallet(val initialTab: Int = 0) : Screen(Tab.WALLET)
     data object Map : Screen(Tab.MAP)
     data object Trains : Screen(Tab.TRAINS)
     data object Profile : Screen(Tab.PROFILE)
@@ -48,17 +48,23 @@ class Navigator {
         }
     }
 
+    // ใช้กับปุ่ม tab bar ทั่วไปที่ไม่สนใจแท็บย่อยภายใน
     fun selectTab(tab: Tab) {
-        currentTab = tab
-        stack.clear()
-        stack.add(
+        selectScreen(
             when (tab) {
                 Tab.HOME -> Screen.Home
-                Tab.WALLET -> Screen.Wallet
+                Tab.WALLET -> Screen.Wallet()
                 Tab.MAP -> Screen.Map
                 Tab.TRAINS -> Screen.Trains
                 Tab.PROFILE -> Screen.Profile
             }
         )
+    }
+
+    // ใช้เวลาต้องเปิด root screen พร้อมกำหนด state เริ่มต้น เช่น Wallet ที่แท็บ Pay QR
+    fun selectScreen(screen: Screen) {
+        currentTab = screen.root ?: currentTab
+        stack.clear()
+        stack.add(screen)
     }
 }

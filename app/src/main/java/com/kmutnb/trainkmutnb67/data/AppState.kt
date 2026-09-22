@@ -23,6 +23,28 @@ object AppState {
     fun setLanguage(l: Lang) { lang = l }
     fun toggleLang() { lang = if (lang == Lang.TH) Lang.EN else Lang.TH }
 
+    // ---- theme ----
+    var isDarkTheme by mutableStateOf(true)
+        private set
+
+    fun setTheme(dark: Boolean) { isDarkTheme = dark }
+    fun toggleTheme() { isDarkTheme = !isDarkTheme }
+
+    // ---- pending fare-screen prefill (set by tapping a station on the map) ----
+    private var pendingFareFromId: String? = null
+    private var pendingFareToId: String? = null
+
+    fun setFareOrigin(stationId: String) { pendingFareFromId = stationId }
+    fun setFareDestination(stationId: String) { pendingFareToId = stationId }
+
+    /** Reads and clears the pending prefill so it only applies once. */
+    fun consumePendingFare(): Pair<String?, String?> {
+        val result = pendingFareFromId to pendingFareToId
+        pendingFareFromId = null
+        pendingFareToId = null
+        return result
+    }
+
     // ---- accounts (mock) ----
     private data class Account(val user: User, val password: String)
 

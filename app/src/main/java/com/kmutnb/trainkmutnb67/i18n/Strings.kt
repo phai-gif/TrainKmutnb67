@@ -89,9 +89,7 @@ class Strings(val lang: Lang) {
     val chooseAmount get() = t("เลือกจำนวนเงิน", "Choose amount")
     val customAmountHint get() = t("หรือกรอกจำนวนเอง (20-10,000)", "Or enter amount (20-10,000)")
     val paymentMethod get() = t("วิธีชำระเงิน", "Payment method")
-    val pmCard get() = t("บัตรเครดิต/เดบิต", "Credit / Debit card")
     val pmPromptPay get() = t("PromptPay / QR", "PromptPay / QR")
-    val pmBanking get() = t("Internet Banking", "Internet Banking")
     val topUpAmount get() = t("เติมเงิน", "Top up")
     val payQrHeader get() = t("แสดง QR Code ที่เครื่องอ่านบัตรที่ประตูทางเข้า", "Show this QR at the entrance gate reader")
     val memberCode get() = t("รหัสสมาชิก", "Member code")
@@ -111,6 +109,10 @@ class Strings(val lang: Lang) {
     val statusClosed get() = t("ปิด", "Closed")
     val interchange get() = t("จุดเปลี่ยนสาย", "Interchange")
     val exits get() = t("ทางออก", "exits")
+    val chooseAsOrigin get() = t("เลือกเป็นสถานีต้นทาง", "Choose as Starting Point")
+    val chooseAsDestination get() = t("เลือกเป็นสถานีปลายทาง", "Choose as Destination Point")
+    val viewStationInfo get() = t("ดูข้อมูลสถานี", "View Station Information")
+    val pinchToZoomHint get() = t("บีบนิ้วเพื่อซูม แตะสถานีเพื่อเลือก", "Pinch to zoom · Tap a station to select")
 
     // Trains
     val trainsTitle get() = t("รถไฟ", "Trains")
@@ -168,6 +170,9 @@ class Strings(val lang: Lang) {
     val editProfile get() = t("แก้ไขโปรไฟล์", "Edit profile")
     val emailNotEditable get() = t("อีเมล (ไม่สามารถแก้ไขได้)", "Email (cannot be changed)")
     val language get() = t("ภาษา", "Language")
+    val theme get() = t("ธีม", "Theme")
+    val themeDark get() = t("มืด", "Dark")
+    val themeLight get() = t("สว่าง", "Light")
     val logout get() = t("ออกจากระบบ", "Log out")
     val myPromotions get() = t("โปรโมชั่นของฉัน", "My promotions")
     val contactStaff get() = t("ติดต่อเจ้าหน้าที่ประจำสถานี", "Contact station staff")
@@ -184,10 +189,6 @@ class Strings(val lang: Lang) {
     val chooseStationPlaceholder get() = t("-- เลือกสถานี --", "-- Choose station --")
     val message get() = t("ข้อความ", "Message")
     val messageToStaffHint get() = t("พิมพ์ข้อความถึงเจ้าหน้าที่ที่สถานี...", "Type a message to station staff...")
-    val emergencyChannels get() = t("ช่องทางฉุกเฉิน", "Emergency channels")
-    val callCenter get() = t("Call Center", "Call Center")
-    val emergency get() = t("ฉุกเฉิน", "Emergency")
-    val allDay get() = t("ตลอด 24 ชั่วโมง", "24 hours")
     val staffReplyStub get() = t(
         "เจ้าหน้าที่สถานีได้รับข้อความแล้ว จะติดต่อกลับโดยเร็ว (จำลอง)",
         "Station staff received your message and will reply shortly (simulated)."

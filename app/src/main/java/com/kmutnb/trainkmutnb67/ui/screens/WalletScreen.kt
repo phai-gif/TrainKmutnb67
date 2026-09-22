@@ -38,6 +38,7 @@ import com.kmutnb.trainkmutnb67.data.AppState
 import com.kmutnb.trainkmutnb67.data.TxnKind
 import com.kmutnb.trainkmutnb67.i18n.LocalStrings
 import com.kmutnb.trainkmutnb67.nav.Navigator
+import com.kmutnb.trainkmutnb67.nav.Screen
 import com.kmutnb.trainkmutnb67.ui.components.CardSurface
 import com.kmutnb.trainkmutnb67.ui.components.GradientButton
 import com.kmutnb.trainkmutnb67.ui.components.RainbowTopLine
@@ -60,7 +61,8 @@ import kotlinx.coroutines.delay
 @Composable
 fun WalletScreen(nav: Navigator) {
     val s = LocalStrings.current
-    var tab by remember { mutableIntStateOf(0) }
+    val initialTab = (nav.current as? Screen.Wallet)?.initialTab ?: 0
+    var tab by remember { mutableIntStateOf(initialTab) }
     var toast by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(toast) {
@@ -134,7 +136,6 @@ private fun TopUpTab(onDone: (String) -> Unit) {
     val s = LocalStrings.current
     var selected by remember { mutableIntStateOf(2) } // 500
     var custom by remember { mutableStateOf("") }
-    var method by remember { mutableIntStateOf(1) }
     var error by remember { mutableStateOf<String?>(null) }
 
     val amount = custom.toIntOrNull() ?: quickAmounts[selected]
@@ -175,13 +176,7 @@ private fun TopUpTab(onDone: (String) -> Unit) {
         }
 
         item { Text(s.paymentMethod, color = TextSecondary, fontSize = 13.sp) }
-        item {
-            Column {
-                RadioRow("💳", s.pmCard, method == 0) { method = 0 }
-                RadioRow("📱", s.pmPromptPay, method == 1) { method = 1 }
-                RadioRow("🏦", s.pmBanking, method == 2) { method = 2 }
-            }
-        }
+        item { RadioRow("📱", s.pmPromptPay, selected = true, onClick = {}) }
 
         item {
             CardSurface {

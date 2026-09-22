@@ -72,7 +72,7 @@ private fun MainShell() {
         Box(Modifier.fillMaxSize().padding(inner)) {
             when (val screen = nav.current) {
                 Screen.Home -> HomeScreen(nav)
-                Screen.Wallet -> WalletScreen(nav)
+                is Screen.Wallet -> WalletScreen(nav)
                 Screen.Map -> MapScreen(nav)
                 Screen.Trains -> TrainsScreen(nav)
                 Screen.Profile -> ProfileScreen(nav)

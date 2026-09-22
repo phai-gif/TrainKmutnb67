@@ -2,10 +2,15 @@ package com.kmutnb.trainkmutnb67.data
 
 import androidx.compose.ui.graphics.Color
 import com.kmutnb.trainkmutnb67.i18n.Lang
+import com.kmutnb.trainkmutnb67.ui.theme.LineApmGold
 import com.kmutnb.trainkmutnb67.ui.theme.LineArl
 import com.kmutnb.trainkmutnb67.ui.theme.LineMrtBlue
+import com.kmutnb.trainkmutnb67.ui.theme.LineMrtPink
 import com.kmutnb.trainkmutnb67.ui.theme.LineMrtPurple
+import com.kmutnb.trainkmutnb67.ui.theme.LineMrtYellow
 import com.kmutnb.trainkmutnb67.ui.theme.LineSilom
+import com.kmutnb.trainkmutnb67.ui.theme.LineSrtDarkRed
+import com.kmutnb.trainkmutnb67.ui.theme.LineSrtLightRed
 import com.kmutnb.trainkmutnb67.ui.theme.LineSukhumvit
 
 enum class PassengerType(val th: String, val en: String, val discountPct: Int) {
@@ -33,6 +38,11 @@ enum class MetroLine(
     MRT_BLUE("MRT", "MRT สายสีน้ำเงิน", "MRT Blue", LineMrtBlue, "05:30", "00:00", "3-5", "5-7"),
     MRT_PURPLE("MRT", "MRT สายสีม่วง", "MRT Purple", LineMrtPurple, "05:30", "00:00", "5-6", "8-10"),
     ARL("ARL", "Airport Rail Link", "Airport Rail Link", LineArl, "05:30", "00:00", "10", "12-15"),
+    SRT_DARK_RED("SRT", "รถไฟฟ้าสายสีแดงเข้ม", "SRT Dark Red", LineSrtDarkRed, "05:30", "00:00", "10-15", "15-20"),
+    SRT_LIGHT_RED("SRT", "รถไฟฟ้าสายสีแดงอ่อน", "SRT Light Red", LineSrtLightRed, "05:30", "00:00", "15-20", "20-30"),
+    APM_GOLD("APM", "รถไฟฟ้าสายสีทอง", "APM Gold", LineApmGold, "06:00", "00:00", "5-10", "10-15"),
+    MRT_YELLOW("MRT", "รถไฟฟ้าสายสีเหลือง", "MRT Yellow", LineMrtYellow, "06:00", "00:00", "5-10", "10"),
+    MRT_PINK("MRT", "รถไฟฟ้าสายสีชมพู", "MRT Pink", LineMrtPink, "06:00", "00:00", "5-10", "10"),
     ;
 
     fun label(lang: Lang) = if (lang == Lang.TH) th else en

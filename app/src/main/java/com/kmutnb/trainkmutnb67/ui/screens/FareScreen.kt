@@ -59,8 +59,9 @@ fun FareContent() {
     val s = LocalStrings.current
     val lang = s.lang
     val all = MockData.stations
-    var from by remember { mutableStateOf(all.first()) }
-    var to by remember { mutableStateOf(all[6]) }
+    val prefill = remember { AppState.consumePendingFare() }
+    var from by remember { mutableStateOf(prefill.first?.let(MockData::station) ?: all.first()) }
+    var to by remember { mutableStateOf(prefill.second?.let(MockData::station) ?: all[6]) }
     var result by remember { mutableStateOf<FareResult?>(null) }
     var toast by remember { mutableStateOf<String?>(null) }
 

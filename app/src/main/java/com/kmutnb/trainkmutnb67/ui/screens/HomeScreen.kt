@@ -219,8 +219,8 @@ private fun BalanceCard(nav: Navigator) {
         }
         Spacer(Modifier.height(14.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            HeaderAction("＋", s.topUp, Modifier.weight(1f)) { nav.selectTab(Tab.WALLET) }
-            HeaderAction("▣", s.scanQr, Modifier.weight(1f)) { nav.selectTab(Tab.WALLET) }
+            HeaderAction("＋", s.topUp, Modifier.weight(1f)) { nav.selectScreen(Screen.Wallet(initialTab = 0)) }
+            HeaderAction("▣", s.tabPayQr, Modifier.weight(1f)) { nav.selectScreen(Screen.Wallet(initialTab = 1)) }
             HeaderAction("↗", s.fareCalc, Modifier.weight(1f)) { nav.push(Screen.Fare) }
         }
     }
