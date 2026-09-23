@@ -44,7 +44,7 @@ import com.kmutnb.trainkmutnb67.nav.Screen
 import com.kmutnb.trainkmutnb67.ui.components.Badge
 import com.kmutnb.trainkmutnb67.ui.components.Chip
 import com.kmutnb.trainkmutnb67.ui.components.MetroMapView
-import com.kmutnb.trainkmutnb67.ui.theme.BrandTeal
+import com.kmutnb.trainkmutnb67.ui.components.MetroMapLegend
 import com.kmutnb.trainkmutnb67.ui.theme.Success
 import com.kmutnb.trainkmutnb67.ui.theme.Surface1
 import com.kmutnb.trainkmutnb67.ui.theme.Surface2
@@ -103,28 +103,11 @@ fun MapScreen(nav: Navigator) {
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(s.pinchToZoomHint, color = TextMuted, fontSize = 11.sp)
+                Spacer(Modifier.height(10.dp))
+                MetroMapLegend(lines = shownLines, lang = lang)
             }
         }
 
-        item {
-            Text(
-                "${s.stationList} (${stations.size})",
-                color = TextPrimary,
-                fontWeight = FontWeight.Bold,
-                fontSize = 15.sp,
-                modifier = Modifier.padding(16.dp),
-            )
-        }
-        item {
-            Column(
-                Modifier.padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                stations.forEach { st ->
-                    StationRow(st, lang, isSelected = selected?.id == st.id) { selected = st }
-                }
-            }
-        }
     }
 
     selected?.let { st ->
@@ -247,40 +230,6 @@ private fun InfoRow(label: String, value: String, valueColor: Color = TextPrimar
     ) {
         Text(label, color = TextSecondary, fontSize = 12.sp)
         Text(value, color = valueColor, fontSize = 12.sp, fontWeight = FontWeight.Medium)
-    }
-}
-
-@Composable
-private fun StationRow(st: Station, lang: Lang, isSelected: Boolean, onClick: () -> Unit) {
-    val s = LocalStrings.current
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(if (isSelected) BrandTeal.copy(alpha = 0.14f) else Surface1)
-            .clickable(onClick = onClick)
-            .padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Box(Modifier.width(4.dp).height(34.dp).clip(RoundedCornerShape(2.dp)).background(st.line.color))
-        Spacer(Modifier.width(12.dp))
-        Column(Modifier.weight(1f)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(st.label(lang), color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 13.sp)
-                if (st.interchange) {
-                    Spacer(Modifier.width(6.dp))
-                    Text("⇄", color = TextMuted, fontSize = 12.sp)
-                }
-            }
-            Text(
-                "${if (lang == Lang.TH) st.en else st.th} · ${st.line.label(lang)}",
-                color = TextSecondary,
-                fontSize = 11.sp,
-            )
-        }
-        Box(Modifier.size(9.dp).clip(CircleShape).background(statusColor(st.status)))
-        Spacer(Modifier.width(6.dp))
-        Text(statusLabel(st.status, s), color = statusColor(st.status), fontSize = 10.sp)
     }
 }
 

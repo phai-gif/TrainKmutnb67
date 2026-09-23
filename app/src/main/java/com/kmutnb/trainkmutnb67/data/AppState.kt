@@ -24,7 +24,7 @@ object AppState {
     fun toggleLang() { lang = if (lang == Lang.TH) Lang.EN else Lang.TH }
 
     // ---- theme ----
-    var isDarkTheme by mutableStateOf(true)
+    var isDarkTheme by mutableStateOf(false)
         private set
 
     fun setTheme(dark: Boolean) { isDarkTheme = dark }

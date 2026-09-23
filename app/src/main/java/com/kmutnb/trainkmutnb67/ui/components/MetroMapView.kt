@@ -1,6 +1,7 @@
 package com.kmutnb.trainkmutnb67.ui.components
 
 import android.graphics.Paint
+import android.graphics.RectF
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -8,19 +9,20 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
@@ -55,23 +56,15 @@ import com.kmutnb.trainkmutnb67.ui.theme.Surface2
 import com.kmutnb.trainkmutnb67.ui.theme.TextPrimary
 import kotlin.math.min
 
-// The map is always drawn on a bright, printed-map-style backdrop, independent
-// of the app's own dark/light theme — that's what makes it read like a real
-// transit diagram instead of app chrome.
-private val MapBg = Color(0xFFFBFBFC)
-private val MapGridBorder = Color(0xFFE4E7EC)
-private val MapLabelColor = Color(0xFF374151) // slate-700, fixed regardless of app theme
-private val MapStationRing = Color(0xFF6B7280) // neutral interchange ring
 // scale = 1.0 already means "the whole map exactly fills the box" (that's what
 // baseScale computes), so the minimum must not go below that — anything lower
 // just shrinks the map into a small island surrounded by empty space instead
 // of filling the screen the way "zoomed all the way out" should.
 private const val ZOOM_MIN = 1f
-private const val ZOOM_MAX = 10f
+private const val ZOOM_MAX = 8f
 private const val DEFAULT_ZOOM = 7f
 // Below this, station names are hidden — only the coloured lines/dots show;
 // past it (including the default view, which sits well above it) names appear.
-private const val LABEL_ZOOM_THRESHOLD = 3f
 
 /**
  * Vector-drawn, pannable & pinch-zoomable schematic map styled after printed
@@ -89,10 +82,12 @@ fun MetroMapView(
     onSelectStation: (Station) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val mapBackground = MaterialTheme.colorScheme.background
+    val mapBorder = MaterialTheme.colorScheme.outlineVariant
+    val mapLabelColor = MaterialTheme.colorScheme.onBackground
     var scale by remember { mutableFloatStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     var canvasSize by remember { mutableStateOf(Size.Zero) }
-    var initialized by remember { mutableStateOf(false) }
     val density = LocalDensity.current
 
     // Stations that share the exact same point (real interchanges between two
@@ -105,9 +100,28 @@ fun MetroMapView(
             .map { (point, group) -> point to group }
     }
 
+    // Fit the visible routes to the viewport. The source coordinates use a
+    // shared virtual canvas, but each filter view should frame its own line.
+    val visibleBounds = remember(lines) {
+        val points = lines.flatMap { line -> MapLayout.linePaths(line).flatten() }
+        if (points.isEmpty()) Offset.Zero to Size(1f, 1f) else {
+            val minX = points.minOf { it.x }
+            val maxX = points.maxOf { it.x }
+            val minY = points.minOf { it.y }
+            val maxY = points.maxOf { it.y }
+            val padding = 420f
+            val width = maxX - minX + padding * 2
+            val height = maxY - minY + padding * 2
+            Offset(minX - padding, minY - padding) to Size(width.coerceAtLeast(1f), height.coerceAtLeast(1f))
+        }
+    }
+    val mapOrigin = visibleBounds.first
+    val mapWidth = visibleBounds.second.width
+    val mapHeight = visibleBounds.second.height
+
     fun baseScale(size: Size): Float =
         if (size.width <= 0f || size.height <= 0f) 0f
-        else min(size.width / MapLayout.MAP_WIDTH, size.height / MapLayout.MAP_HEIGHT)
+        else min(size.width / mapWidth, size.height / mapHeight)
 
     // Keeps the map snug in the viewport: when the diagram is bigger than the
     // box it can only pan until its edge reaches the box edge (never drifting
@@ -115,8 +129,8 @@ fun MetroMapView(
     // centered and can't be panned around at all.
     fun clampOffset(candidate: Offset, bs: Float): Offset {
         if (bs <= 0f || canvasSize.width <= 0f || canvasSize.height <= 0f) return candidate
-        val contentW = MapLayout.MAP_WIDTH * bs
-        val contentH = MapLayout.MAP_HEIGHT * bs
+        val contentW = mapWidth * bs
+        val contentH = mapHeight * bs
         val x = if (contentW <= canvasSize.width) {
             (canvasSize.width - contentW) / 2f
         } else {
@@ -142,44 +156,26 @@ fun MetroMapView(
         offset = clampOffset(newOffset, baseScale(canvasSize) * newScale)
     }
 
-    // The default view opens zoomed into the busiest interchange (Siam)
-    // rather than "fit everything" — with 93 stations across 10 lines,
-    // shrinking the whole network onto a phone-width screen leaves station
-    // labels too small to read no matter how much spacing the layout itself
-    // has. This is how real map apps behave too: they open on a comfortable,
-    // readable view, not a zoomed-out overview of the entire system. Zooming
-    // out (pinch, or the − button — down to 0.35x) still reaches the full
-    // 10-line network in one glance when that's what's wanted.
+    // The default view frames the currently visible routes. Filtering a line
+    // recomputes the bounds so the selected route fills the same map viewport.
     fun recenter() {
         val bs = baseScale(canvasSize)
         if (bs <= 0f) return
-        scale = DEFAULT_ZOOM
-        val focus = MapLayout.stationPositions["CEN"]
-            ?: Offset(MapLayout.MAP_WIDTH / 2f, MapLayout.MAP_HEIGHT / 2f)
-        val totalScale = bs * DEFAULT_ZOOM
-        offset = clampOffset(
-            Offset(
-                canvasSize.width / 2f - focus.x * totalScale,
-                canvasSize.height / 2f - focus.y * totalScale,
-            ),
-            totalScale,
-        )
+        scale = ZOOM_MIN
+        offset = clampOffset(Offset.Zero, bs * ZOOM_MIN)
     }
 
-    LaunchedEffect(canvasSize) {
-        if (!initialized && canvasSize.width > 0f && canvasSize.height > 0f) {
-            recenter()
-            initialized = true
-        }
+    LaunchedEffect(canvasSize, lines) {
+        if (canvasSize.width > 0f && canvasSize.height > 0f) recenter()
     }
 
     Box(
         modifier
             .fillMaxWidth()
-            .height(760.dp)
+            .height(560.dp)
             .clip(RoundedCornerShape(16.dp))
-            .background(MapBg)
-            .border(1.dp, MapGridBorder, RoundedCornerShape(16.dp))
+            .background(mapBackground)
+            .border(1.dp, mapBorder, RoundedCornerShape(16.dp))
             .onSizeChanged { canvasSize = Size(it.width.toFloat(), it.height.toFloat()) }
             .pointerInput(stations) {
                 detectTapGestures { tapPos ->
@@ -189,7 +185,7 @@ fun MetroMapView(
                     var nearestDist = Float.MAX_VALUE
                     stations.forEach { st ->
                         val p = MapLayout.stationPositions[st.id] ?: return@forEach
-                        val screenPt = Offset(offset.x + p.x * bs, offset.y + p.y * bs)
+                        val screenPt = Offset(offset.x + (p.x - mapOrigin.x) * bs, offset.y + (p.y - mapOrigin.y) * bs)
                         val d = (screenPt - tapPos).getDistance()
                         if (d < nearestDist) { nearestDist = d; nearest = st }
                     }
@@ -209,7 +205,7 @@ fun MetroMapView(
             val bs = baseScale(size) * scale
             if (bs <= 0f) return@Canvas
 
-            fun toScreen(p: Offset) = Offset(offset.x + p.x * bs, offset.y + p.y * bs)
+            fun toScreen(p: Offset) = Offset(offset.x + (p.x - mapOrigin.x) * bs, offset.y + (p.y - mapOrigin.y) * bs)
             // Capped well below the new higher DEFAULT_ZOOM on purpose: station
             // spacing (which tracks the full `scale`) grows faster than the
             // dots/text themselves, so the default view actually gains visible
@@ -221,123 +217,128 @@ fun MetroMapView(
             // there are 93 of them fighting for space, so hide the text
             // entirely there and let just the coloured lines/dots show the
             // shape of the network; zooming in past this point reveals names.
-            val showLabels = scale >= LABEL_ZOOM_THRESHOLD
+            // At the overview scale, show only interchange names to keep the
+            // network readable. A single-line view or zoomed-in view shows all stops.
+            val showAllLabels = if (lines.size == 1) scale >= 2.8f else scale >= 3.4f
 
             // Lines, drawn as rounded polylines so bends read as smooth turns
             // rather than sharp corners — the hallmark of a printed transit map.
             lines.forEach { line ->
-                val pts = MapLayout.linePoints(line).map(::toScreen)
-                if (pts.size >= 2) {
-                    val path = roundedPolyline(pts, cornerRadius = 22.dp.toPx() * zoomFactor)
-                    drawPath(
-                        path,
-                        color = line.color,
-                        style = Stroke(
-                            width = 5.5.dp.toPx() * zoomFactor,
-                            cap = StrokeCap.Round,
-                            join = StrokeJoin.Round,
-                        ),
-                    )
+                MapLayout.linePaths(line).forEach { route ->
+                    val pts = route.map(::toScreen)
+                    if (pts.size >= 2) {
+                        val path = roundedPolyline(pts, cornerRadius = 22.dp.toPx() * zoomFactor)
+                        drawPath(
+                            path,
+                            color = line.color,
+                            style = Stroke(
+                                width = 5.5.dp.toPx() * zoomFactor,
+                                cap = StrokeCap.Round,
+                                join = StrokeJoin.Round,
+                            ),
+                        )
+                    }
+                }
+            }
+
+            val trackSegments = lines.flatMap { line ->
+                MapLayout.linePaths(line).flatMap { route ->
+                    route.map(::toScreen).zipWithNext()
                 }
             }
 
             val labelPaint = Paint().apply {
                 isAntiAlias = true
-                textSize = 10.5.sp.toPx() * zoomFactor
-                color = MapLabelColor.toArgb()
+                // Keep labels legible without letting their size grow as fast
+                // as the route spacing when zooming.
+                textSize = 9.5.sp.toPx() * scale.coerceIn(0.9f, 1.45f)
+                color = mapLabelColor.toArgb()
+            }
+            val nativeCanvas = drawContext.canvas.nativeCanvas
+            val placedLabels = mutableListOf<RectF>()
+            val markerClearanceRects = dotGroups.map { (point, group) ->
+                val center = toScreen(point)
+                val isHub = group.size > 1 || group.any { it.interchange }
+                val radius = (if (isHub) 8.5.dp.toPx() else 4.5.dp.toPx()) * zoomFactor + 3.dp.toPx()
+                RectF(center.x - radius, center.y - radius, center.x + radius, center.y + radius)
             }
 
             // Station markers: small white-cored rings in the line color for
             // regular stops, bigger neutral hub rings where lines interchange.
-            dotGroups.forEach { (point, group) ->
-                val sp = toScreen(point)
-                val isInterchange = group.size > 1 || group.any { it.interchange }
-                val isSelected = group.any { it.id == selectedStationId }
-                val radius = (if (isInterchange) 8.5.dp.toPx() else 4.5.dp.toPx()) * zoomFactor
-                val ringColor = if (isInterchange) MapStationRing else group.first().line.color
-                val ringWidth = (if (isInterchange) 3.dp else 2.2.dp).toPx() * zoomFactor
+            dotGroups.sortedByDescending { (_, group) -> group.size > 1 || group.any { it.interchange } }
+                .forEach { (point, group) ->
+                    val sp = toScreen(point)
+                    val isInterchange = group.size > 1 || group.any { it.interchange }
+                    val isSelected = group.any { it.id == selectedStationId }
+                    val radius = (if (isInterchange) 8.5.dp.toPx() else 4.5.dp.toPx()) * zoomFactor
+                    val ringColor = if (isInterchange) mapBorder else group.first().line.color
+                    val ringWidth = (if (isInterchange) 3.dp else 2.2.dp).toPx() * zoomFactor
 
-                if (isSelected) {
-                    drawCircle(BrandTeal.copy(alpha = 0.30f), radius = radius + 9.dp.toPx() * zoomFactor, center = sp)
-                }
-                drawCircle(Color.White, radius = radius, center = sp)
-                drawCircle(ringColor, radius = radius, center = sp, style = Stroke(width = ringWidth))
-                if (isSelected) {
-                    drawCircle(BrandTeal, radius = radius + 3.dp.toPx() * zoomFactor, center = sp, style = Stroke(width = 2.dp.toPx() * zoomFactor))
-                }
+                    if (isSelected) {
+                        drawCircle(BrandTeal.copy(alpha = 0.30f), radius = radius + 9.dp.toPx() * zoomFactor, center = sp)
+                    }
+                    drawCircle(mapBackground, radius = radius, center = sp)
+                    drawCircle(ringColor, radius = radius, center = sp, style = Stroke(width = ringWidth))
+                    if (isSelected) {
+                        drawCircle(BrandTeal, radius = radius + 3.dp.toPx() * zoomFactor, center = sp, style = Stroke(width = 2.dp.toPx() * zoomFactor))
+                    }
 
-                if (showLabels) {
-                    // Nudge the label along the perpendicular of the station's
-                    // own track instead of always dropping it to the right, so
-                    // it doesn't sit on top of the line or the next station.
-                    val label = group.first().label(lang)
-                    val perp = MapLayout.labelDirections[group.first().id] ?: Offset(1f, 0f)
-                    val labelDist = radius + 12.dp.toPx() * zoomFactor
-                    val anchorX = sp.x + perp.x * labelDist
-                    val anchorY = sp.y + perp.y * labelDist
-                    val nativeCanvas = drawContext.canvas.nativeCanvas
-
-                    // On a genuinely diagonal run (e.g. the Purple Line's
-                    // northwest stretch) tilt the text to follow the track,
-                    // exactly like a printed transit map does — that reads far
-                    // better than fighting to fit a horizontal label into a
-                    // diagonal gap between tightly-spaced stations.
-                    val norm = Offset(-perp.y, perp.x)
-                    var angleDeg = Math.toDegrees(kotlin.math.atan2(norm.y, norm.x).toDouble()).toFloat()
-                    if (angleDeg > 90f) angleDeg -= 180f
-                    if (angleDeg <= -90f) angleDeg += 180f
-                    val isDiagonal = kotlin.math.abs(angleDeg) in 20f..70f
-
-                    when {
-                        isDiagonal -> {
-                            labelPaint.textAlign = if (perp.x >= 0) Paint.Align.LEFT else Paint.Align.RIGHT
-                            nativeCanvas.save()
-                            nativeCanvas.rotate(angleDeg, anchorX, anchorY)
-                            nativeCanvas.drawText(label, anchorX, anchorY + 3.5.dp.toPx() * zoomFactor, labelPaint)
-                            nativeCanvas.restore()
-                        }
-                        kotlin.math.abs(perp.x) >= kotlin.math.abs(perp.y) -> {
-                            labelPaint.textAlign = if (perp.x >= 0) Paint.Align.LEFT else Paint.Align.RIGHT
-                            nativeCanvas.drawText(label, anchorX, anchorY + 3.5.dp.toPx() * zoomFactor, labelPaint)
-                        }
-                        else -> {
-                            labelPaint.textAlign = Paint.Align.CENTER
-                            val vPad = if (perp.y < 0) -4.dp.toPx() * zoomFactor else 12.dp.toPx() * zoomFactor
-                            nativeCanvas.drawText(label, anchorX, anchorY + vPad, labelPaint)
+                    if (showAllLabels || isInterchange || isSelected) {
+                        // Shared interchanges can have different names on each line
+                        // (for example Asok/Sukhumvit), so retain each unique label.
+                        group.map { it.label(lang) }.distinct().forEach { label ->
+                            val width = labelPaint.measureText(label)
+                            val metrics = labelPaint.fontMetrics
+                            val gap = radius + 12.dp.toPx()
+                            val direction = MapLayout.labelDirections[group.first().id] ?: Offset(1f, 0f)
+                            val align = if (direction.x < -0.25f) Paint.Align.RIGHT else Paint.Align.LEFT
+                            val candidates = listOf(gap, gap + metrics.descent - metrics.ascent + 5.dp.toPx()).map { distance ->
+                                val center = sp + direction * distance
+                                Triple(align, center.x, center.y - (metrics.ascent + metrics.descent) / 2f)
+                            }
+                            var best: Triple<Paint.Align, Float, Float>? = null
+                            var bestRect: RectF? = null
+                            var bestScore = Float.MAX_VALUE
+                            candidates.forEach { (align, x, baseline) ->
+                                val left = when (align) {
+                                    Paint.Align.LEFT -> x
+                                    Paint.Align.RIGHT -> x - width
+                                    else -> x - width / 2f
+                                }
+                                val textRect = RectF(left, baseline + metrics.ascent, left + width, baseline + metrics.descent)
+                                val rect = RectF(textRect).apply { inset(-3.dp.toPx(), -3.dp.toPx()) }
+                                var score = 0f
+                                placedLabels.forEach { used ->
+                                    val overlapW = (min(rect.right, used.right) - maxOf(rect.left, used.left)).coerceAtLeast(0f)
+                                    val overlapH = (min(rect.bottom, used.bottom) - maxOf(rect.top, used.top)).coerceAtLeast(0f)
+                                    score += overlapW * overlapH * 10f
+                                }
+                                markerClearanceRects.forEach { marker ->
+                                    if (RectF.intersects(rect, marker)) score += 100000f
+                                }
+                                val trackRect = RectF(rect).apply { inset(-2.dp.toPx(), -2.dp.toPx()) }
+                                if (trackSegments.any { (start, end) -> segmentIntersectsRect(start, end, trackRect) }) {
+                                    score += 100000f
+                                }
+                                if (rect.left < 2f || rect.right > size.width - 2f || rect.top < 2f || rect.bottom > size.height - 2f) score += 100000f
+                                if (score < bestScore) {
+                                    bestScore = score
+                                    best = Triple(align, x, baseline)
+                                    bestRect = rect
+                                }
+                            }
+                            // Suppress labels that cannot fit cleanly; they appear after zooming closer.
+                            if (bestScore < 1f) {
+                                best?.let { (align, x, baseline) ->
+                                    labelPaint.textAlign = align
+                                    bestRect?.let(placedLabels::add)
+                                    nativeCanvas.drawText(label, x, baseline, labelPaint)
+                                }
+                            }
                         }
                     }
                 }
-            }
-        }
 
-        // Legend, bottom-left — same spot a printed line map keeps its key.
-        // Split into two columns once there are enough lines to make one tall
-        // column awkward (e.g. the "all lines" view with all 10 systems).
-        Row(
-            Modifier
-                .align(Alignment.BottomStart)
-                .padding(10.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(Color.White.copy(alpha = 0.95f))
-                .border(1.dp, MapGridBorder, RoundedCornerShape(10.dp))
-                .padding(horizontal = 10.dp, vertical = 8.dp),
-        ) {
-            val columns = if (lines.size > 5) lines.chunked((lines.size + 1) / 2) else listOf(lines)
-            columns.forEachIndexed { i, col ->
-                if (i > 0) Spacer(Modifier.width(14.dp))
-                Column {
-                    col.forEach { line ->
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(vertical = 2.dp),
-                        ) {
-                            Box(Modifier.size(9.dp).clip(CircleShape).background(line.color))
-                            Spacer(Modifier.width(6.dp))
-                            Text(line.label(lang), color = MapLabelColor, fontSize = 10.sp)
-                        }
-                    }
-                }
-            }
         }
 
         Column(
@@ -390,4 +391,69 @@ private fun MapZoomButton(label: String, onClick: () -> Unit) {
     ) {
         Text(label, color = TextPrimary, fontSize = 16.sp)
     }
+}
+
+
+/** Line key placed in the page flow below the map, so it never covers routes. */
+@Composable
+fun MetroMapLegend(lines: List<MetroLine>, lang: Lang, modifier: Modifier = Modifier) {
+    val legendBackground = MaterialTheme.colorScheme.surface
+    val legendBorder = MaterialTheme.colorScheme.outlineVariant
+    val legendText = MaterialTheme.colorScheme.onSurface
+    val columns = if (lines.size > 5) lines.chunked((lines.size + 1) / 2) else listOf(lines)
+    Row(
+        modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(legendBackground)
+            .border(1.dp, legendBorder, RoundedCornerShape(12.dp))
+            .padding(horizontal = 12.dp, vertical = 10.dp),
+        horizontalArrangement = Arrangement.spacedBy(14.dp),
+    ) {
+        columns.forEach { column ->
+            Column(modifier = Modifier.weight(1f)) {
+                column.forEach { line ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(vertical = 4.dp),
+                    ) {
+                        Box(Modifier.width(18.dp).height(4.dp).clip(RoundedCornerShape(2.dp)).background(line.color))
+                        Spacer(Modifier.width(8.dp))
+                        androidx.compose.material3.Text(
+                            line.label(lang),
+                            color = legendText,
+                            fontSize = 11.sp,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+/** Returns true when a route segment crosses a label's reserved rectangle. */
+private fun segmentIntersectsRect(start: Offset, end: Offset, rect: RectF): Boolean {
+    val dx = end.x - start.x
+    val dy = end.y - start.y
+    var tMin = 0f
+    var tMax = 1f
+
+    fun clip(p: Float, q: Float): Boolean {
+        if (p == 0f) return q >= 0f
+        val t = q / p
+        if (p < 0f) {
+            if (t > tMax) return false
+            if (t > tMin) tMin = t
+        } else {
+            if (t < tMin) return false
+            if (t < tMax) tMax = t
+        }
+        return true
+    }
+
+    return clip(-dx, start.x - rect.left) &&
+            clip(dx, rect.right - start.x) &&
+            clip(-dy, start.y - rect.top) &&
+            clip(dy, rect.bottom - start.y) &&
+            tMin <= tMax
 }

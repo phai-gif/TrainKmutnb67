@@ -8,13 +8,30 @@ object MockData {
     // ---------------------------------------------------------------- Stations
     // Ordered north/west -> south/east along each line (subset of the real lines).
     val stations: List<Station> = buildList {
-        // BTS Sukhumvit
+        // 1. BTS Sukhumvit Line (N24 - E23)
         val sukhumvit = listOf(
-            s("N9", "หมอชิต", "Mo Chit", MetroLine.SUKHUMVIT, NORMAL, interchange = true, exits = 4, parking = true),
+            s("N24", "คูคต", "Khu Khot", MetroLine.SUKHUMVIT, NORMAL, exits = 4, parking = true),
+            s("N23", "แยก คปอ.", "Yaek Kor Por Aor", MetroLine.SUKHUMVIT, NORMAL, exits = 4, parking = true),
+            s("N22", "พิพิธภัณฑ์กองทัพอากาศ", "Royal Thai Air Force Museum", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("N21", "โรงเรียนนายเรืออากาศ", "Royal Thai Air Force Academy", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("N20", "สะพานใหม่", "Saphan Mai", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("N19", "สายหยุด", "Sai Yud", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("N18", "พหลโยธิน 59", "Phahon Yothin 59", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("N17", "วัดพระศรีมหาธาตุ", "Wat Phra Sri Mahathat", MetroLine.SUKHUMVIT, CROWDED, interchange = true, exits = 4),
+            s("N16", "กรมทหารราบที่ 11", "11th Infantry Regiment", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("N15", "บางบัว", "Bang Bua", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("N14", "กรมป่าไม้", "Royal Forest Department", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("N13", "มหาวิทยาลัยเกษตรศาสตร์", "Kasetsart University", MetroLine.SUKHUMVIT, CROWDED, exits = 4),
+            s("N12", "เสนานิคม", "Sena Nikhom", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("N11", "รัชโยธิน", "Ratchayothin", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("N10", "พหลโยธิน 24", "Phahon Yothin 24", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("N9", "ห้าแยกลาดพร้าว", "Ha Yaek Lat Phrao", MetroLine.SUKHUMVIT, CROWDED, interchange = true, exits = 4),
+            s("N8", "หมอชิต", "Mo Chit", MetroLine.SUKHUMVIT, CROWDED, interchange = true, exits = 4, parking = true),
             s("N7", "สะพานควาย", "Saphan Khwai", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
             s("N5", "อารีย์", "Ari", MetroLine.SUKHUMVIT, CROWDED, exits = 4),
-            s("N4", "สนามเป้า", "Sanam Pao", MetroLine.SUKHUMVIT, NORMAL, exits = 2),
+            s("N4", "สนามเป้า", "Sanam Pao", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
             s("N3", "อนุสาวรีย์ชัยสมรภูมิ", "Victory Monument", MetroLine.SUKHUMVIT, CROWDED, exits = 4),
+            s("N2", "พญาไท", "Phaya Thai", MetroLine.SUKHUMVIT, CROWDED, interchange = true, exits = 4),
             s("N1", "ราชเทวี", "Ratchathewi", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
             s("CEN", "สยาม", "Siam", MetroLine.SUKHUMVIT, CROWDED, interchange = true, exits = 8),
             s("E1", "ชิดลม", "Chit Lom", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
@@ -26,128 +43,222 @@ object MockData {
             s("E7", "เอกมัย", "Ekkamai", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
             s("E8", "พระโขนง", "Phra Khanong", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
             s("E9", "อ่อนนุช", "On Nut", MetroLine.SUKHUMVIT, CROWDED, exits = 6, parking = true),
+            s("E10", "บางจาก", "Bang Chak", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("E11", "ปุณณวิถี", "Punnawithi", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("E12", "อุดมสุข", "Udom Suk", MetroLine.SUKHUMVIT, CROWDED, exits = 5),
+            s("E13", "บางนา", "Bang Na", MetroLine.SUKHUMVIT, NORMAL, exits = 6),
+            s("E14", "แบริ่ง", "Bearing", MetroLine.SUKHUMVIT, NORMAL, exits = 5),
+            s("E15", "สำโรง", "Samrong", MetroLine.SUKHUMVIT, CROWDED, interchange = true, exits = 6),
+            s("E16", "ปู่เจ้า", "Pu Chao", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("E17", "ช้างเอราวัณ", "Chang Erawan", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("E18", "โรงเรียนนายเรือ", "Royal Thai Naval Academy", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("E19", "ปากน้ำ", "Pak Nam", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("E20", "ศรีนครินทร์", "Srinagarindra", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("E21", "แพรกษา", "Phraek Sa", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("E22", "สายลวด", "Sai Luat", MetroLine.SUKHUMVIT, NORMAL, exits = 4),
+            s("E23", "เคหะฯ", "Kheha", MetroLine.SUKHUMVIT, NORMAL, exits = 4, parking = true)
         )
         addAll(sukhumvit)
-        // BTS Silom
+
+        // 2. BTS Silom Line (W1 - S12)
         addAll(
             listOf(
                 s("W1", "สนามกีฬาแห่งชาติ", "National Stadium", MetroLine.SILOM, NORMAL, exits = 2),
-                s("CEN2", "สยาม", "Siam", MetroLine.SILOM, CROWDED, interchange = true, exits = 8),
+                s("CEN", "สยาม", "Siam", MetroLine.SILOM, CROWDED, interchange = true, exits = 8),
                 s("S1", "ราชดำริ", "Ratchadamri", MetroLine.SILOM, NORMAL, exits = 4),
                 s("S2", "ศาลาแดง", "Sala Daeng", MetroLine.SILOM, CROWDED, interchange = true, exits = 4),
                 s("S3", "ช่องนนทรี", "Chong Nonsi", MetroLine.SILOM, NORMAL, exits = 4),
+                s("S4", "เซนต์หลุยส์", "Saint Louis", MetroLine.SILOM, NORMAL, exits = 4),
                 s("S5", "สุรศักดิ์", "Surasak", MetroLine.SILOM, NORMAL, exits = 3),
                 s("S6", "สะพานตากสิน", "Saphan Taksin", MetroLine.SILOM, CROWDED, exits = 2),
-                s("S8", "กรุงธนบุรี", "Krung Thon Buri", MetroLine.SILOM, NORMAL, interchange = true, exits = 4),
-                s("S9", "วงเวียนใหญ่", "Wongwian Yai", MetroLine.SILOM, NORMAL, exits = 4),
-                s("S12", "บางหว้า", "Bang Wa", MetroLine.SILOM, NORMAL, interchange = true, exits = 4, parking = true),
+                s("S7", "กรุงธนบุรี", "Krung Thon Buri", MetroLine.SILOM, NORMAL, interchange = true, exits = 4),
+                s("S8", "วงเวียนใหญ่", "Wongwian Yai", MetroLine.SILOM, NORMAL, exits = 4),
+                s("S9", "โพธิ์นิมิตร", "Pho Nimit", MetroLine.SILOM, NORMAL, exits = 4),
+                s("S10", "ตลาดพลู", "Talat Phlu", MetroLine.SILOM, NORMAL, exits = 4),
+                s("S11", "วุฒากาศ", "Wutthakat", MetroLine.SILOM, NORMAL, exits = 4),
+                s("S12", "บางหว้า", "Bang Wa", MetroLine.SILOM, NORMAL, interchange = true, exits = 4, parking = true)
             )
         )
-        // MRT Blue
+
+        // 3. MRT Blue Line (BL01 - BL38)
         addAll(
             listOf(
-                s("BL1", "หัวลำโพง", "Hua Lamphong", MetroLine.MRT_BLUE, NORMAL, exits = 4),
-                s("BL2", "สามย่าน", "Sam Yan", MetroLine.MRT_BLUE, NORMAL, exits = 2),
-                s("BL3", "สีลม", "Si Lom", MetroLine.MRT_BLUE, CROWDED, interchange = true, exits = 4),
-                s("BL4", "ลุมพินี", "Lumphini", MetroLine.MRT_BLUE, NORMAL, exits = 3),
-                s("BL5", "คลองเตย", "Khlong Toei", MetroLine.MRT_BLUE, NORMAL, exits = 3),
-                s("BL6", "ศูนย์การประชุมแห่งชาติสิริกิติ์", "QSNCC", MetroLine.MRT_BLUE, NORMAL, exits = 3),
-                s("BL7", "สุขุมวิท", "Sukhumvit", MetroLine.MRT_BLUE, CROWDED, interchange = true, exits = 3),
-                s("BL8", "เพชรบุรี", "Phetchaburi", MetroLine.MRT_BLUE, NORMAL, interchange = true, exits = 2),
-                s("BL9", "พระราม 9", "Phra Ram 9", MetroLine.MRT_BLUE, CROWDED, exits = 3, parking = true),
-                s("BL10", "ศูนย์วัฒนธรรมแห่งประเทศไทย", "Thailand Cultural Centre", MetroLine.MRT_BLUE, NORMAL, interchange = true, exits = 4),
-                s("BL12", "ลาดพร้าว", "Lat Phrao", MetroLine.MRT_BLUE, NORMAL, interchange = true, exits = 4),
-                s("BL15", "จตุจักร", "Chatuchak Park", MetroLine.MRT_BLUE, CROWDED, interchange = true, exits = 3, parking = true),
+                s("BL01", "ท่าพระ", "Tha Phra", MetroLine.MRT_BLUE, CROWDED, interchange = true, exits = 4),
+                s("BL02", "จรัญฯ 13", "Charan 13", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL03", "ไฟฉาย", "Fai Chai", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL04", "บางขุนนนท์", "Bang Khun Non", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL05", "บางยี่ขัน", "Bang Yi Khan", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL06", "สิรินธร", "Sirindhorn", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL07", "บางพลัด", "Bang Phlat", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL08", "บางอ้อ", "Bang O", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL09", "บางโพ", "Bang Pho", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL10", "เตาปูน", "Tao Poon", MetroLine.MRT_BLUE, CROWDED, interchange = true, exits = 4),
+                s("BL11", "บางซื่อ", "Bang Sue", MetroLine.MRT_BLUE, CROWDED, interchange = true, exits = 2),
+                s("BL12", "กำแพงเพชร", "Kamphaeng Phet", MetroLine.MRT_BLUE, NORMAL, exits = 3),
+                s("BL13", "สวนจตุจักร", "Chatuchak Park", MetroLine.MRT_BLUE, CROWDED, interchange = true, exits = 3, parking = true),
+                s("BL14", "พหลโยธิน", "Phahon Yothin", MetroLine.MRT_BLUE, CROWDED, interchange = true, exits = 5),
+                s("BL15", "ลาดพร้าว", "Lat Phrao", MetroLine.MRT_BLUE, NORMAL, interchange = true, exits = 4, parking = true),
+                s("BL16", "รัชดาภิเษก", "Ratchadaphisek", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL17", "สุทธิสาร", "Sutthisan", MetroLine.MRT_BLUE, CROWDED, exits = 4),
+                s("BL18", "ห้วยขวาง", "Huai Khwang", MetroLine.MRT_BLUE, CROWDED, exits = 4),
+                s("BL19", "ศูนย์วัฒนธรรมแห่งประเทศไทย", "Thailand Cultural Centre", MetroLine.MRT_BLUE, NORMAL, interchange = true, exits = 4, parking = true),
+                s("BL20", "พระราม 9", "Phra Ram 9", MetroLine.MRT_BLUE, CROWDED, exits = 3),
+                s("BL21", "เพชรบุรี", "Phetchaburi", MetroLine.MRT_BLUE, CROWDED, interchange = true, exits = 3),
+                s("BL22", "สุขุมวิท", "Sukhumvit", MetroLine.MRT_BLUE, CROWDED, interchange = true, exits = 3),
+                s("BL23", "ศูนย์การประชุมแห่งชาติสิริกิติ์", "Queen Sirikit National Convention Centre", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL24", "คลองเตย", "Khlong Toei", MetroLine.MRT_BLUE, NORMAL, exits = 2),
+                s("BL25", "ลุมพินี", "Lumpini", MetroLine.MRT_BLUE, NORMAL, exits = 3),
+                s("BL26", "สีลม", "Si Lom", MetroLine.MRT_BLUE, CROWDED, interchange = true, exits = 2),
+                s("BL27", "สามย่าน", "Sam Yan", MetroLine.MRT_BLUE, NORMAL, exits = 2),
+                s("BL28", "หัวลำโพง", "Hua Lamphong", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL29", "วัดมังกร", "Wat Mangkon", MetroLine.MRT_BLUE, CROWDED, exits = 3),
+                s("BL30", "สามยอด", "Sam Yot", MetroLine.MRT_BLUE, NORMAL, exits = 3),
+                s("BL31", "สนามไชย", "Sanam Chai", MetroLine.MRT_BLUE, NORMAL, exits = 5),
+                s("BL32", "อิสรภาพ", "Itsaraphap", MetroLine.MRT_BLUE, NORMAL, exits = 2),
+                s("BL33", "บางไผ่", "Bang Phai", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL34", "บางหว้า", "Bang Wa", MetroLine.MRT_BLUE, NORMAL, interchange = true, exits = 4),
+                s("BL35", "เพชรเกษม 48", "Phetkasem 48", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL36", "ภาษีเจริญ", "Phasi Charoen", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL37", "บางแค", "Bang Khae", MetroLine.MRT_BLUE, NORMAL, exits = 4),
+                s("BL38", "หลักสอง", "Lak Song", MetroLine.MRT_BLUE, CROWDED, exits = 4, parking = true)
             )
         )
-        // MRT Purple
+
+        // 4. MRT Purple Line (PP01 - PP16)
         addAll(
             listOf(
-                s("PP16", "เตาปูน", "Tao Poon", MetroLine.MRT_PURPLE, NORMAL, interchange = true, exits = 4),
-                s("PP15", "บางซ่อน", "Bang Son", MetroLine.MRT_PURPLE, NORMAL, interchange = true, exits = 3),
+                s("PP01", "คลองบางไผ่", "Khlong Bang Phai", MetroLine.MRT_PURPLE, NORMAL, exits = 4, parking = true),
+                s("PP02", "ตลาดบางใหญ่", "Talad Bang Yai", MetroLine.MRT_PURPLE, CROWDED, exits = 4),
+                s("PP03", "สามแยกบางใหญ่", "Sam Yaek Bang Yai", MetroLine.MRT_PURPLE, NORMAL, exits = 4),
+                s("PP04", "บางพลู", "Bang Phu", MetroLine.MRT_PURPLE, NORMAL, exits = 4),
+                s("PP05", "บางรักใหญ่", "Bang Rak Yai", MetroLine.MRT_PURPLE, NORMAL, exits = 4),
+                s("PP06", "บางรักน้อยท่าอิฐ", "Bang Rak Noi Tha It", MetroLine.MRT_PURPLE, NORMAL, exits = 4, parking = true),
+                s("PP07", "ไทรม้า", "Sai Ma", MetroLine.MRT_PURPLE, NORMAL, exits = 4),
+                s("PP08", "สะพานพระนั่งเกล้า", "Phra Nang Klao Bridge", MetroLine.MRT_PURPLE, NORMAL, exits = 4),
+                s("PP09", "แยกนนทบุรี 1", "Yaek Nonthaburi 1", MetroLine.MRT_PURPLE, NORMAL, exits = 4),
+                s("PP10", "บางกระสอ", "Bang Krasor", MetroLine.MRT_PURPLE, NORMAL, exits = 4),
+                s("PP11", "ศูนย์ราชการนนทบุรี", "Nonthaburi Civic Center", MetroLine.MRT_PURPLE, NORMAL, interchange = true, exits = 4),
+                s("PP12", "กระทรวงสาธารณสุข", "Ministry of Public Health", MetroLine.MRT_PURPLE, NORMAL, exits = 4),
+                s("PP13", "แยกติวานนท์", "Yaek Tiwanon", MetroLine.MRT_PURPLE, NORMAL, exits = 4),
                 s("PP14", "วงศ์สว่าง", "Wong Sawang", MetroLine.MRT_PURPLE, NORMAL, exits = 4),
-                s("PP13", "แยกติวานนท์", "Yaek Tiwanon", MetroLine.MRT_PURPLE, NORMAL, exits = 2),
-                s("PP11", "ศูนย์ราชการนนทบุรี", "Nonthaburi Civic Centre", MetroLine.MRT_PURPLE, NORMAL, interchange = true, exits = 4, parking = true),
-                s("PP10", "บางกระสอ", "Bang Krasor", MetroLine.MRT_PURPLE, NORMAL, exits = 2),
-                s("PP08", "บางพลู", "Bang Phlu", MetroLine.MRT_PURPLE, NORMAL, exits = 2),
-                s("PP05", "คลองบางไผ่", "Khlong Bang Phai", MetroLine.MRT_PURPLE, NORMAL, exits = 2, parking = true),
+                s("PP15", "บางซ่อน", "Bang Son", MetroLine.MRT_PURPLE, NORMAL, interchange = true, exits = 4),
+                s("PP16", "เตาปูน", "Tao Poon", MetroLine.MRT_PURPLE, CROWDED, interchange = true, exits = 4)
             )
         )
-        // Airport Rail Link
+
+        // 5. Airport Rail Link (A1 - A8)
         addAll(
             listOf(
-                s("A1", "พญาไท", "Phaya Thai", MetroLine.ARL, CROWDED, interchange = true, exits = 4),
-                s("A2", "ราชปรารภ", "Ratchaprarop", MetroLine.ARL, NORMAL, exits = 2),
-                s("A3", "มักกะสัน", "Makkasan", MetroLine.ARL, NORMAL, interchange = true, exits = 3, parking = true),
-                s("A4", "รามคำแหง", "Ramkhamhaeng", MetroLine.ARL, NORMAL, exits = 3),
-                s("A5", "หัวหมาก", "Hua Mak", MetroLine.ARL, NORMAL, interchange = true, exits = 2),
-                s("A6", "บ้านทับช้าง", "Ban Thap Chang", MetroLine.ARL, NORMAL, exits = 2),
-                s("A7", "ลาดกระบัง", "Lat Krabang", MetroLine.ARL, NORMAL, exits = 2, parking = true),
-                s("A8", "สุวรรณภูมิ", "Suvarnabhumi", MetroLine.ARL, CROWDED, exits = 2),
+                s("A1", "สุวรรณภูมิ", "Suvarnabhumi", MetroLine.ARL, CROWDED, exits = 2),
+                s("A2", "ลาดกระบัง", "Lat Krabang", MetroLine.ARL, NORMAL, exits = 2, parking = true),
+                s("A3", "บ้านทับช้าง", "Ban Thap Chang", MetroLine.ARL, NORMAL, exits = 2),
+                s("A4", "หัวหมาก", "Hua Mak", MetroLine.ARL, NORMAL, interchange = true, exits = 2),
+                s("A5", "รามคำแหง", "Ramkhamhaeng", MetroLine.ARL, NORMAL, exits = 2),
+                s("A6", "มักกะสัน", "Makkasan", MetroLine.ARL, NORMAL, interchange = true, exits = 4, parking = true),
+                s("A7", "ราชปรารภ", "Ratchaprarop", MetroLine.ARL, NORMAL, exits = 2),
+                s("A8", "พญาไท", "Phaya Thai", MetroLine.ARL, CROWDED, interchange = true, exits = 2)
             )
         )
-        // SRT Dark Red Line
+
+        // 6. SRT Dark Red Line (RN01 - RN10)
         addAll(
             listOf(
-                s("DR1", "จตุจักร", "Chatuchak", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
-                s("DR2", "วัดเสมียนนารี", "Wat Samian Nari", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
-                s("DR3", "บางเขน", "Bang Khen", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
-                s("DR4", "หลักสี่", "Lak Si", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
-                s("DR5", "ดอนเมือง", "Don Mueang", MetroLine.SRT_DARK_RED, CROWDED, exits = 3, parking = true),
-                s("DR6", "หลักหก", "Lak Hok", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
-                s("DR7", "รังสิต", "Rangsit", MetroLine.SRT_DARK_RED, NORMAL, exits = 3, parking = true),
+                s("RN01", "กรุงเทพอภิวัฒน์", "Krung Thep Aphiwat", MetroLine.SRT_DARK_RED, CROWDED, interchange = true, exits = 4),
+                s("RN02", "จตุจักร", "Chatuchak", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
+                s("RN03", "วัดเสมียนนารี", "Wat Samian Nari", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
+                s("RN04", "บางเขน", "Bang Khen", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
+                s("RN05", "ทุ่งสองห้อง", "Thung Song Hong", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
+                s("RN06", "หลักสี่", "Lak Si", MetroLine.SRT_DARK_RED, NORMAL, interchange = true, exits = 2),
+                s("RN07", "การเคหะ", "Kan Kheha", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
+                s("RN08", "ดอนเมือง", "Don Mueang", MetroLine.SRT_DARK_RED, CROWDED, exits = 3, parking = true),
+                s("RN09", "หลักหก", "Lak Hok", MetroLine.SRT_DARK_RED, NORMAL, exits = 2),
+                s("RN10", "รังสิต", "Rangsit", MetroLine.SRT_DARK_RED, NORMAL, exits = 3, parking = true)
             )
         )
-        // SRT Light Red Line
+
+        // 7. SRT Light Red Line (RW01 - RW06)
         addAll(
             listOf(
-                s("LR1", "บางซ่อน", "Bang Son", MetroLine.SRT_LIGHT_RED, NORMAL, interchange = true, exits = 3),
-                s("LR2", "บางบำหรุ", "Bang Bamru", MetroLine.SRT_LIGHT_RED, NORMAL, exits = 2),
-                s("LR3", "บางพลัด", "Bang Phlat", MetroLine.SRT_LIGHT_RED, NORMAL, exits = 2),
-                s("LR4", "บางอ้อ", "Bang O", MetroLine.SRT_LIGHT_RED, NORMAL, exits = 2),
-                s("LR5", "ตลิ่งชัน", "Taling Chan", MetroLine.SRT_LIGHT_RED, NORMAL, exits = 2, parking = true),
+                s("RW01", "กรุงเทพอภิวัฒน์", "Krung Thep Aphiwat", MetroLine.SRT_LIGHT_RED, CROWDED, interchange = true, exits = 4),
+                s("RW02", "บางซ่อน", "Bang Son", MetroLine.SRT_LIGHT_RED, NORMAL, interchange = true, exits = 2),
+                s("RW03", "พระราม 6", "Rama VI", MetroLine.SRT_LIGHT_RED, NORMAL, exits = 2),
+                s("RW04", "บางกรวย-กฟผ.", "Bang Kruai - EGAT", MetroLine.SRT_LIGHT_RED, NORMAL, exits = 2),
+                s("RW05", "บางบำหรุ", "Bang Bamru", MetroLine.SRT_LIGHT_RED, NORMAL, exits = 2),
+                s("RW06", "ตลิ่งชัน", "Taling Chan", MetroLine.SRT_LIGHT_RED, NORMAL, exits = 2, parking = true)
             )
         )
-        // APM Gold Line
+
+        // 8. APM Gold Line (G1 - G3)
         addAll(
             listOf(
                 s("G1", "กรุงธนบุรี", "Krung Thon Buri", MetroLine.APM_GOLD, NORMAL, interchange = true, exits = 4),
-                s("G2", "เจริญนคร", "Charoen Nakhon", MetroLine.APM_GOLD, NORMAL, exits = 2),
-                s("G3", "คลองสาน", "Khlong San", MetroLine.APM_GOLD, NORMAL, exits = 2),
+                s("G2", "เจริญนคร", "Charoen Nakhon", MetroLine.APM_GOLD, CROWDED, exits = 2),
+                s("G3", "คลองสาน", "Khlong San", MetroLine.APM_GOLD, NORMAL, exits = 2)
             )
         )
-        // MRT Yellow Line
+
+        // 9. MRT Yellow Line (YL01 - YL23)
         addAll(
             listOf(
-                s("Y1", "ลาดพร้าว", "Lat Phrao", MetroLine.MRT_YELLOW, NORMAL, interchange = true, exits = 4),
-                s("Y2", "ภาวนา", "Phawana", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
-                s("Y3", "โชคชัย 4", "Chok Chai 4", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
-                s("Y4", "ลาดพร้าว 71", "Lat Phrao 71", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
-                s("Y5", "ลาดพร้าว 83", "Lat Phrao 83", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
-                s("Y6", "มหาดไทย", "Mahat Thai", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
-                s("Y7", "ลาดพร้าว 101", "Lat Phrao 101", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
-                s("Y8", "บางกะปิ", "Bang Kapi", MetroLine.MRT_YELLOW, CROWDED, exits = 3),
-                s("Y9", "แยกลำสาลี", "Yaek Lam Sali", MetroLine.MRT_YELLOW, NORMAL, interchange = true, exits = 3),
-                s("Y10", "หัวหมาก", "Hua Mak", MetroLine.MRT_YELLOW, NORMAL, interchange = true, exits = 2),
-                s("Y11", "ศรีลาซาล", "Si Lasalle", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
-                s("Y12", "สำโรง", "Samrong", MetroLine.MRT_YELLOW, CROWDED, exits = 3, parking = true),
+                s("YL01", "ลาดพร้าว", "Lat Phrao", MetroLine.MRT_YELLOW, NORMAL, interchange = true, exits = 4, parking = true),
+                s("YL02", "ภาวนา", "Phawana", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL03", "โชคชัย 4", "Chok Chai 4", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL04", "ลาดพร้าว 71", "Lat Phrao 71", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL05", "ลาดพร้าว 83", "Lat Phrao 83", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL06", "มหาดไทย", "Mahat Thai", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL07", "ลาดพร้าว 101", "Lat Phrao 101", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL08", "บางกะปิ", "Bang Kapi", MetroLine.MRT_YELLOW, CROWDED, exits = 3),
+                s("YL09", "แยกลำสาลี", "Yaek Lam Sali", MetroLine.MRT_YELLOW, NORMAL, interchange = true, exits = 3),
+                s("YL10", "ศรีกรีฑา", "Si Kritha", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL11", "หัวหมาก", "Hua Mak", MetroLine.MRT_YELLOW, NORMAL, interchange = true, exits = 2),
+                s("YL12", "กลันตัน", "Kalantan", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL13", "ศรีพัฒนา", "Si Phatthana", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL14", "ศรีนครินทร์ 38", "Srinagarindra 38", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL15", "สวนหลวง ร.9", "Suan Luang Rama IX", MetroLine.MRT_YELLOW, CROWDED, exits = 2),
+                s("YL16", "ศรีอุดม", "Si Udom", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL17", "ศรีเอี่ยม", "Si Iam", MetroLine.MRT_YELLOW, NORMAL, exits = 2, parking = true),
+                s("YL18", "ศรีลาซาล", "Si La Salle", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL19", "ศรีแบริ่ง", "Si Bearing", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL20", "ศรีด่าน", "Si Dan", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL21", "ศรีเทพา", "Si Thepha", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL22", "ทิพพาวาลย์", "Thipphawan", MetroLine.MRT_YELLOW, NORMAL, exits = 2),
+                s("YL23", "สำโรง", "Samrong", MetroLine.MRT_YELLOW, CROWDED, interchange = true, exits = 3)
             )
         )
-        // MRT Pink Line
+
+        // 10. MRT Pink Line (PK01 - PK30)
         addAll(
             listOf(
-                s("PK1", "ศูนย์ราชการนนทบุรี", "Nonthaburi Civic Centre", MetroLine.MRT_PINK, NORMAL, interchange = true, exits = 4),
-                s("PK2", "แคราย", "Khae Rai", MetroLine.MRT_PINK, NORMAL, exits = 2),
-                s("PK3", "สนามบินน้ำ", "Sanambin Nam", MetroLine.MRT_PINK, NORMAL, exits = 2),
-                s("PK4", "สามัคคี", "Samakkhi", MetroLine.MRT_PINK, NORMAL, exits = 2),
-                s("PK5", "วัดพระศรีมหาธาตุ", "Wat Phra Sri Mahathat", MetroLine.MRT_PINK, NORMAL, interchange = true, exits = 3),
-                s("PK6", "รามอินทรา 3", "Ram Inthra 3", MetroLine.MRT_PINK, NORMAL, exits = 2),
-                s("PK7", "ลาดปลาเค้า", "Lat Pla Khao", MetroLine.MRT_PINK, NORMAL, exits = 2),
-                s("PK8", "วัชรพล", "Vachiraphayaban", MetroLine.MRT_PINK, NORMAL, exits = 2),
-                s("PK9", "คู้บอน", "Khu Bon", MetroLine.MRT_PINK, NORMAL, exits = 2),
-                s("PK10", "นพรัตน์", "Nopparat", MetroLine.MRT_PINK, NORMAL, exits = 2),
-                s("PK11", "ตลาดมีนบุรี", "Min Buri Market", MetroLine.MRT_PINK, NORMAL, exits = 2),
-                s("PK12", "มีนบุรี", "Min Buri", MetroLine.MRT_PINK, CROWDED, exits = 3, parking = true),
+                s("PK01", "ศูนย์ราชการนนทบุรี", "Nonthaburi Civic Center", MetroLine.MRT_PINK, NORMAL, interchange = true, exits = 4),
+                s("PK02", "แคราย", "Khae Rai", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK03", "สนามบินน้ำ", "Sanam Bin Nam", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK04", "สามเล็ด", "Sam Yaek Sanambinnam", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK05", "ชลประทาน", "Cholprathan", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK06", "ปากเกร็ด", "Pak Kret", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK07", "แจ้งวัฒนะ-ปากเกร็ด 28", "Chaeng Watthana - Pak Kret 28", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK08", "เมืองทองธานี", "Muang Thong Thani", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK09", "แจ้งวัฒนะ 14", "Chaeng Watthana 14", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK10", "ศูนย์ราชการเฉลิมพระเกียรติ", "Government Complex", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK11", "โทรคมนาคมแห่งชาติ", "National Telecom", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK12", "หลักสี่", "Lak Si", MetroLine.MRT_PINK, NORMAL, interchange = true, exits = 2),
+                s("PK13", "ราชภัฏพระนคร", "Rajabhat Phra Nakhon", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK14", "วัดพระศรีมหาธาตุ", "Wat Phra Sri Mahathat", MetroLine.MRT_PINK, NORMAL, interchange = true, exits = 4),
+                s("PK15", "รามอินทรา 3", "Ram Inthra 3", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK16", "ลาดปลาเค้า", "Lat Pla Khao", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK17", "รามอินทรา กม.4", "Ram Inthra Kor Mor 4", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK18", "มัยลาภ", "Maiyalap", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK19", "วัชรพล", "Vacharaphol", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK20", "รามอินทรา กม.6", "Ram Inthra Kor Mor 6", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK21", "คู้บอน", "Khu Bon", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK22", "รามอินทรา กม.9", "Ram Inthra Kor Mor 9", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK23", "วงแหวนรามอินทรา", "Outer Ring Road - Ram Inthra", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK24", "นพรัตน์", "Nopparat", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK25", "บางชัน", "Bang Chan", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK26", "เศรษฐบุตรบำเพ็ญ", "Setthabutbamphen", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK27", "ตลาดมีนบุรี", "Min Buri Market", MetroLine.MRT_PINK, NORMAL, exits = 2),
+                s("PK28", "มีนบุรี", "Min Buri", MetroLine.MRT_PINK, CROWDED, exits = 3, parking = true),
+                s("PK29", "อิมแพ็ค เมืองทองธานี", "IMPACT Muang Thong Thani", MetroLine.MRT_PINK, CROWDED, exits = 2),
+                s("PK30", "ทะเลสาบเมืองทองธานี", "Muang Thong Thani Lake", MetroLine.MRT_PINK, NORMAL, exits = 2)
             )
         )
     }
